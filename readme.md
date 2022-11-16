@@ -10,6 +10,8 @@ is required.
 
 # Examples
 
+## Functions/procedures
+
 To log the calling parameters to a function/procedure:
 
     ```
@@ -25,6 +27,36 @@ To log an exception:
     ```
     call util_log.log_exception ( SQLSTATE::text || ' - ' || SQLERRM ) ;
     ```
+
+## Views
+
+Views can also be logged using the util_log.query_bug function by including the fuction call in the view definition. This is (potentially) useful for determining if a view is actually being used.
+
+While simpler,
+    ```
+    CREATE OR REPLACE VIEW ...
+    AS
+    SELECT t0.
+        FROM some_table_name t0
+        WHERE ...
+            AND util_log.query_bug ( 'blah blah blah' ) ;
+    ```
+appears to result in a logging entry for each tuple selected.
+
+Using a CTE however,
+    ```
+    CREATE OR REPLACE VIEW ...
+    AS
+    WITH qb AS (
+        SELECT util_log.query_bug ( 'blah blah blah' ) AS x
+    )
+    SELECT t0.
+        FROM some_table_name t0
+        CROSS JOIN qb
+        WHERE ...
+            AND qb.x ;
+    ```
+appears to result in one logging entry for each time the view is queried.
 
 # References
 
