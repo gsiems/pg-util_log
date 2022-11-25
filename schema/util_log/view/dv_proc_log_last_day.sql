@@ -25,6 +25,4 @@ SELECT row_number() over ( order by dpl.tmsp_exec desc ) AS rn,
     WHERE dpl.tmsp_exec > now() - '1 day'::interval
     ORDER BY dpl.tmsp_exec DESC ;
 
-ALTER VIEW util_log.dv_proc_log_last_day OWNER TO bio_db_owner ;
-
 COMMENT ON VIEW util_log.dv_proc_log_last_day IS 'View of database log entries for the past 24 hours.' ;

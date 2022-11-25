@@ -25,6 +25,4 @@ SELECT row_number() over ( order by dpl.tmsp_exec desc ) AS rn,
     WHERE dpl.date_exec = current_date
     ORDER BY dpl.tmsp_exec DESC ;
 
-ALTER VIEW util_log.dv_proc_log_today OWNER TO bio_db_owner ;
-
 COMMENT ON VIEW util_log.dv_proc_log_today IS 'View of database log entries for the current day.' ;

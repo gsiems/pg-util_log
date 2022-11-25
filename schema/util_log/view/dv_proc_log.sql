@@ -24,8 +24,6 @@ SELECT row_number() over ( order by dpl.tmsp_exec desc ) AS rn,
         ON ( stl.id = dpl.log_level )
     ORDER BY dpl.tmsp_exec DESC ;
 
-ALTER VIEW util_log.dv_proc_log OWNER TO bio_db_owner ;
-
 COMMENT ON VIEW util_log.dv_proc_log IS 'View of database log entries.' ;
 
 COMMENT ON COLUMN util_log.dv_proc_log.rn IS 'The row number of the log entry.' ;
