@@ -29,10 +29,10 @@ BEGIN
     l_datatype := pg_typeof ( a_arg ) ;
 
     IF l_datatype = 'text' OR l_datatype LIKE '%character%' THEN
-        IF length ( a_arg ) > l_trim_length THEN
-            RETURN quote_literal ( substr ( a_arg, 1, l_trim_length ) || '...'::text ) ;
+        IF length ( a_arg::text ) > l_trim_length THEN
+            RETURN quote_literal ( substr ( a_arg::text, 1, l_trim_length ) || '...'::text ) ;
         ELSE
-            RETURN quote_literal ( a_arg ) ;
+            RETURN quote_literal ( a_arg::text ) ;
         END IF ;
     END IF ;
 
