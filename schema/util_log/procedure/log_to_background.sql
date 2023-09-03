@@ -72,6 +72,14 @@ BEGIN
         END IF ;
     END LOOP ;
 
+    IF l_obj_line_number IS NULL OR trim ( l_obj_line_number ) = '' THEN
+        l_obj_line_number := 'null::integer' ;
+    END IF ;
+
+    IF l_calling_obj_line_number IS NULL OR trim ( l_calling_obj_line_number ) = '' THEN
+        l_calling_obj_line_number := 'null::integer' ;
+    END IF ;
+
     -- If the log entry is for the beginning of a function/procedure then
     -- check if the function/procedure being called is being called from
     -- another function/procedure or if it is being called as an entry point.
@@ -85,8 +93,8 @@ BEGIN
     l_cmd := 'select true from util_log.log_atx ( '
         || 'a_log_level => ' || ( coalesce ( l_log_level, 0 ) )::text || ', '
         || 'a_pid => ' || pg_backend_pid()::text || ', '
-        || 'a_obj_line_number => ' || coalesce ( l_obj_line_number, 'null::integer' ) || ', '
-        || 'a_calling_obj_line_number => ' || coalesce ( l_calling_obj_line_number, 'null::integer' ) || ', '
+        || 'a_obj_line_number => ' || l_obj_line_number || ', '
+        || 'a_calling_obj_line_number => ' || l_calling_obj_line_number || ', '
         || 'a_obj_name => ' || quote_nullable ( l_obj_name ) || ', '
         || 'a_calling_obj_name => ' || quote_nullable ( l_calling_obj_name ) || ', '
         || 'a_remarks => ' || l_remarks || ' ) ;' ;

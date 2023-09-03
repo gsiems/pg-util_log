@@ -28,7 +28,6 @@ DECLARE
     i integer := 0 ;
     l_log_level integer ;
     l_cmd text ;
-    l_remarks text ;
     l_count integer ;
 
 BEGIN
@@ -72,6 +71,14 @@ BEGIN
         END IF ;
     END LOOP ;
 
+    IF l_obj_line_number IS NULL OR trim ( l_obj_line_number ) = '' THEN
+        l_obj_line_number := 'null::integer' ;
+    END IF ;
+
+    IF l_calling_obj_line_number IS NULL OR trim ( l_calling_obj_line_number ) = '' THEN
+        l_calling_obj_line_number := 'null::integer' ;
+    END IF ;
+
     -- If the log entry is for the beginning of a function/procedure then
     -- check if the function/procedure being called is being called from
     -- another function/procedure or if it is being called as an entry point.
@@ -111,8 +118,8 @@ BEGIN
                 psa.client_port,
                 psa.pid,
                 ' || ( coalesce ( l_log_level, 0 ) )::text || ' AS log_level,
-                ' || coalesce ( l_obj_line_number, 'null::integer' ) || ' AS obj_line_number,
-                ' || coalesce ( l_calling_obj_line_number, 'null::integer' ) || ' AS calling_obj_line_number,
+                ' || l_obj_line_number || ' AS obj_line_number,
+                ' || l_calling_obj_line_number || ' AS calling_obj_line_number,
                 psa.datname AS db_name,
                 psa.usename AS username,
                 psa.application_name,
