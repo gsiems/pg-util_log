@@ -1,6 +1,6 @@
 CREATE TABLE util_log.st_log_level (
     id int,
-    name varchar,
+    name text,
     CONSTRAINT st_log_level_pk PRIMARY KEY ( id ),
     CONSTRAINT st_log_level_nk UNIQUE ( name ) );
 
