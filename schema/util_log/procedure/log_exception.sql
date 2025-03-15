@@ -3,6 +3,6 @@ CREATE OR REPLACE PROCEDURE util_log.log_exception (
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    CALL util_log.log_to_dblink ( 10, variadic a_args ) ;
+    call util_log.log_to_dblink ( 10, variadic a_args ) ;
 END ;
 $$ ;

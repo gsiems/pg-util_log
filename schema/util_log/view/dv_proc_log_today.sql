@@ -1,11 +1,11 @@
 CREATE OR REPLACE VIEW util_log.dv_proc_log_today
 AS
-SELECT row_number() over ( order by dpl.tmsp_exec desc ) AS rn,
+SELECT row_number () OVER ( ORDER BY dpl.tmsp_exec DESC ) AS rn,
         dpl.date_exec,
         dpl.tmsp_exec,
-        lead ( dpl.tmsp_exec, 1 ) over (
-                partition by dpl.pid, dpl.username, dpl.client_address, dpl.client_port, dpl.date_exec
-                order by dpl.date_exec, dpl.tmsp_exec ) - dpl.tmsp_exec AS exec_interval,
+        lead ( dpl.tmsp_exec, 1 ) OVER (
+            PARTITION BY dpl.pid, dpl.username, dpl.client_address, dpl.client_port, dpl.date_exec
+            ORDER BY dpl.date_exec, dpl.tmsp_exec ) - dpl.tmsp_exec AS exec_interval,
         dpl.db_name,
         dpl.username,
         dpl.client_address,

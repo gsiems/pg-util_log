@@ -1,9 +1,10 @@
 CREATE OR REPLACE FUNCTION util_log.dici (
     a_arg anyelement )
 RETURNS text
-IMMUTABLE
 LANGUAGE plpgsql
+IMMUTABLE
 SECURITY DEFINER
+SET search_path = pg_catalog, util_log
 AS $$
 /**
 

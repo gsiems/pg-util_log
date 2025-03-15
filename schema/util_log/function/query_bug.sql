@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION util_log.query_bug (
-    a_tag text default null )
+    a_tag text DEFAULT NULL )
 RETURNS boolean
 LANGUAGE plpgsql
 SECURITY DEFINER

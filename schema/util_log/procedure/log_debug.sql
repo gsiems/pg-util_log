@@ -3,6 +3,6 @@ CREATE OR REPLACE PROCEDURE util_log.log_debug (
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    CALL util_log.log_to_dblink ( 50, variadic a_args ) ;
+    call util_log.log_to_dblink ( 50, variadic a_args ) ;
 END ;
 $$ ;

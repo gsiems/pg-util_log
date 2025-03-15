@@ -15,7 +15,7 @@ Function log_to_none performs no actual logging whatsoever.
 */
 BEGIN
 
-    NULL;
+    NULL ;
 
-END;
+END ;
 $$ ;
