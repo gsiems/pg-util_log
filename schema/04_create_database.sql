@@ -17,9 +17,3 @@ ALTER DATABASE util_log OWNER TO postgres ;
 COMMENT ON DATABASE util_log IS 'Development and testing database for util_log functionality' ;
 
 GRANT CONNECT ON DATABASE util_log TO util_log_tester ;
-
-\connect util_log
-
-CREATE EXTENSION IF NOT EXISTS pg_background ;
-
-GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO util_log_tester ;

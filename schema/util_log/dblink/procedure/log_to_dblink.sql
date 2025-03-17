@@ -1,13 +1,14 @@
-CREATE OR REPLACE PROCEDURE util_log.log_to_background (
+CREATE OR REPLACE PROCEDURE util_log.log_to_dblink (
     a_log_level integer,
     variadic a_args text[] )
 LANGUAGE plpgsql
 SECURITY DEFINER
+SET search_path = pg_catalog, util_log
 AS $$
 /**
-Function log_to_background takes a logging level and a variable list of text values,
+Function log_to_dblink takes a logging level and a variable list of text values,
 determines which function/procedure was called (and which function/procedure
-called it (if applicable)) and uses pg_background_launch to log the results.
+called it (if applicable)) and uses dblink to log the results.
 
 | Parameter                      | In/Out | Datatype   | Remarks                                            |
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
@@ -28,8 +29,7 @@ DECLARE
     i integer := 0 ;
     l_log_level integer ;
     l_cmd text ;
-    l_remarks text ;
-    l_count integer ;
+    has_conn boolean ;
 
 BEGIN
 
@@ -88,20 +88,46 @@ BEGIN
         l_log_level := 20 ;
     END IF ;
 
-    l_remarks := quote_literal ( array_to_string ( a_args, ', ' ) ) ;
+    has_conn := 'logconn' = ANY ( dblink_get_connections () ) ;
+    IF has_conn IS NULL OR NOT has_conn THEN
+        PERFORM dblink_connect ( 'logconn', 'loopback_dblink' ) ;
+    END IF ;
 
-    l_cmd := 'select true from util_log.log_atx ( '
-        || 'a_log_level => ' || ( coalesce ( l_log_level, 0 ) )::text || ', '
-        || 'a_pid => ' || pg_backend_pid()::text || ', '
-        || 'a_obj_line_number => ' || l_obj_line_number || ', '
-        || 'a_calling_obj_line_number => ' || l_calling_obj_line_number || ', '
-        || 'a_obj_name => ' || quote_nullable ( l_obj_name ) || ', '
-        || 'a_calling_obj_name => ' || quote_nullable ( l_calling_obj_name ) || ', '
-        || 'a_remarks => ' || l_remarks || ' ) ;' ;
+    l_cmd := '
+    INSERT INTO util_log.dt_proc_log (
+            date_exec,
+            tmsp_exec,
+            client_address,
+            client_port,
+            pid,
+            log_level,
+            obj_line_number,
+            calling_obj_line_number,
+            db_name,
+            username,
+            application_name,
+            obj_name,
+            calling_obj_name,
+            remarks )
+        SELECT current_date AS date_exec,
+                current_timestamp AS tmsp_exec,
+                psa.client_addr,
+                psa.client_port,
+                psa.pid,
+                ' || ( coalesce ( l_log_level, 0 ) )::text || ' AS log_level,
+                ' || l_obj_line_number || ' AS obj_line_number,
+                ' || l_calling_obj_line_number || ' AS calling_obj_line_number,
+                psa.datname AS db_name,
+                psa.usename AS username,
+                psa.application_name,
+                ' || quote_nullable ( l_obj_name ) || ' AS obj_name,
+                ' || quote_nullable ( l_calling_obj_name ) || ' AS calling_obj_name,
+                ' || quote_literal ( array_to_string ( a_args, ', ' ) ) || ' AS remarks
+            FROM pg_stat_activity psa
+            WHERE psa.pid = ' || pg_backend_pid()::text || '
+            LIMIT 1 ' ;
 
-    SELECT count(*)
-        INTO l_count
-        FROM public.pg_background_launch ( l_cmd ) ;
+    PERFORM dblink_exec ( 'logconn', l_cmd ) ;
 
 END;
 $$ ;
