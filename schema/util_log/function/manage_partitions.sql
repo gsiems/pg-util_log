@@ -11,19 +11,19 @@ for the util_log.dt_proc_log table.
 */
 DECLARE
 
-    l_schema_name text := 'util_log' ;   -- The name of the schema for the partitioned table
+    l_schema_name text := 'util_log' ; -- The name of the schema for the partitioned table
     l_table_name text := 'dt_proc_log' ; -- The name of the table to manage partitions for
-    l_retention_days integer := 30 ;     -- The number of past days to retain logs for.
-    l_pre_days integer := 10 ;           -- The number of future days to pre-create partitions for.
-                                         -- The intent is to maintain a buffer so that, in the
-                                         -- event that this function is not run for a few days,
-                                         -- the logging functionality can continue to work.
+    l_retention_days integer := 30 ; -- The number of past days to retain logs for.
+    l_pre_days integer := 10 ; -- The number of future days to pre-create partitions for.
+    -- The intent is to maintain a buffer so that, in the
+    -- event that this function is not run for a few days,
+    -- the logging functionality can continue to work.
 
     dt record ;
 
 BEGIN
 
-    -- ASSERTION: the schema name and table name of the partioned table do not require quoting
+    -- ASSERTION: the schema name and table name of the partitioned table do not require quoting
     -- ASSERTION: there are no other partitioned tables in the schema that have a similar name
     -- ASSERTION: the table partitions reside in the same schema as the parent table
 
