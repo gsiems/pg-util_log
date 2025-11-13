@@ -3,7 +3,7 @@ CREATE OR REPLACE PROCEDURE util_log.log_to_dblink (
     variadic a_args text[] )
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = pg_catalog, util_log
+SET search_path = pg_catalog, util_log, public
 AS $$
 /**
 Function log_to_dblink takes a logging level and a variable list of text values,
@@ -35,8 +35,6 @@ BEGIN
 
     GET DIAGNOSTICS l_stack = PG_CONTEXT ;
 
-    -- NB the stack has different number of lines depending on if functions are called vs procedures
-    --
     -- NOTICE:  --- Call Stack ---
     -- PL/pgSQL function util_log.log_entry(text[]) line 9 at GET DIAGNOSTICS
     -- SQL statement "CALL util_log.log_entry(util_log.dici(42))"
@@ -46,7 +44,7 @@ BEGIN
     --
     -- The topmost "PL/pgSQL .." line should be the call to this,
     -- the second "PL/pgSQL .." line should be the callee,
-    -- the third "PL/pgSQL .." line should be the caller
+    -- the third "PL/pgSQL .." line (if there is one) should be the caller
 
     FOREACH x IN ARRAY string_to_array ( l_stack, E'\n' ) LOOP
         IF starts_with ( x, 'PL/pgSQL'::text ) THEN
@@ -87,6 +85,19 @@ BEGIN
     IF l_log_level = 30 AND l_calling_obj_name IS NULL THEN
         l_log_level := 20 ;
     END IF ;
+
+    -- If desired to alter the logging verbosity, add/adjust as desired.
+    -- Note the logging level values:
+    --      10 => Exception
+    --      20 => Entry
+    --      30 => Begin
+    --      40 => Info
+    --      50 => Debug
+    /*
+    IF l_log_level > 20 THEN
+        RETURN ;
+    END IF ;
+    */
 
     has_conn := 'logconn' = ANY ( dblink_get_connections () ) ;
     IF has_conn IS NULL OR NOT has_conn THEN
@@ -129,5 +140,5 @@ BEGIN
 
     PERFORM dblink_exec ( 'logconn', l_cmd ) ;
 
-END;
+END ;
 $$ ;
