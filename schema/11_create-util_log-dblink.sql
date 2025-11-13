@@ -27,9 +27,9 @@ CREATE USER MAPPING FOR CURRENT_USER SERVER loopback_dblink
 -- Functions -----------------------------------------------------------
 
 -- Procedures ----------------------------------------------------------
-\i util_log/dblink/procedure/log_to_dblink.sql
-\i util_log/dblink/procedure/log_begin.sql
-\i util_log/dblink/procedure/log_debug.sql
-\i util_log/dblink/procedure/log_exception.sql
-\i util_log/dblink/procedure/log_finish.sql
-\i util_log/dblink/procedure/log_info.sql
+\i util_log/procedure/log_to_dblink.sql
+\i util_log/procedure/log_begin.sql
+\i util_log/procedure/log_debug.sql
+\i util_log/procedure/log_exception.sql
+\i util_log/procedure/log_finish.sql
+\i util_log/procedure/log_info.sql
