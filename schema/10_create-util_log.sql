@@ -49,8 +49,8 @@ GRANT SELECT ON util_log.dv_proc_log_last_week TO current_user ;
 \i util_log/function/update_last_logged.sql
 
 -- Specify Logger ------------------------------------------------------
-\i schema/11_create-util_log-dblink.sql
---\i schema/11_create-util_log-pg_background.sql
+\i 11_create-util_log-dblink.sql
+--\i 11_create-util_log-pg_background.sql
 
 -- Query bug -----------------------------------------------------------
 \i util_log/function/query_bug.sql
