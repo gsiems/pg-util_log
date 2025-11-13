@@ -6,9 +6,10 @@ SECURITY DEFINER
 SET search_path = pg_catalog, util_log
 AS $$
 /**
-Function log_to_background takes a logging level and a variable list of text values,
-determines which function/procedure was called (and which function/procedure
-called it (if applicable)) and uses pg_background_launch to log the results.
+Function log_to_background takes a logging level and a variable list of text
+values, determines which function/procedure was called (and which
+function/procedure called it (if applicable)) and uses pg_background_launch to
+log the results.
 
 | Parameter                      | In/Out | Datatype   | Remarks                                            |
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
@@ -34,10 +35,8 @@ DECLARE
 
 BEGIN
 
-    GET diagnostics l_stack = pg_context ;
+    GET DIAGNOSTICS l_stack = PG_CONTEXT ;
 
-    -- NB the stack has different number of lines depending on if functions are called vs procedures
-    --
     -- NOTICE:  --- Call Stack ---
     -- PL/pgSQL function util_log.log_entry(text[]) line 9 at GET DIAGNOSTICS
     -- SQL statement "CALL util_log.log_entry(util_log.dici(42))"
@@ -47,9 +46,9 @@ BEGIN
     --
     -- The topmost "PL/pgSQL .." line should be the call to this,
     -- the second "PL/pgSQL .." line should be the callee,
-    -- the third "PL/pgSQL .." line should be the caller
+    -- the third "PL/pgSQL .." line (if there is one) should be the caller
 
-    FOREACH x IN array string_to_array ( l_stack, E'\n' ) LOOP
+    FOREACH x IN ARRAY string_to_array ( l_stack, E'\n' ) LOOP
         IF starts_with ( x, 'PL/pgSQL'::text ) THEN
             i := i + 1 ;
             IF i = 3 THEN
@@ -88,6 +87,19 @@ BEGIN
     IF l_log_level = 30 AND l_calling_obj_name IS NULL THEN
         l_log_level := 20 ;
     END IF ;
+
+    -- If desired to alter the logging verbosity, add/adjust as desired.
+    -- Note the logging level values:
+    --      10 => Exception
+    --      20 => Entry
+    --      30 => Begin
+    --      40 => Info
+    --      50 => Debug
+    /*
+    IF l_log_level > 20 THEN
+        RETURN ;
+    END IF ;
+    */
 
     l_remarks := quote_literal ( array_to_string ( a_args, ', ' ) ) ;
 
