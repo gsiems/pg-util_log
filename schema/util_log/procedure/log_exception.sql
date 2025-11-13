@@ -9,6 +9,12 @@ Procedure log_info is used to log the "Exception" level information.
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
 | a_args                         | in     | text[]     | The list of exception elements to log              |
 
+To log an exception:
+
+```
+    call util_log.log_exception ( SQLSTATE::text || ' - ' || SQLERRM ) ;
+```
+
 */
 BEGIN
     call util_log.log_to_dblink ( 10, variadic a_args ) ;
