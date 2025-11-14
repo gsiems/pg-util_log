@@ -38,26 +38,25 @@ for the util_log.dt_proc_log table.
 ## Function [query_bug](../../schema/util_log/function/query_bug.sql)
 Returns boolean
 
-Function query_bug is intended for including in views to log if the view is
-being queried from.
+
+Function query_bug is intended for including in SQL user functions or views to
+log if the function/view is being queried from.
 
 | Parameter                      | In/Out | Datatype   | Remarks                                            |
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
 | a_tag                          | in     | text       | The optional tag to log.                           |
 
-NB this is defined as a plpgsql (vs. plain sql) function, possibly because it
+NB this is defined as a PLpgSQL (vs. plain SQL) function, possibly because it
 needs to be, but primarily to prevent the query optimizer from optimizing it
-out of the view query.
+out of the query.
 
-Views can be logged using this function by including the function call in the
-view definition. This is (potentially) useful for determining if a view is
-actually being used.
+Queries can be logged using this function by including the function call in the
+query definition. This is (potentially) useful for determining if a SQL user
+function or view is actually being used.
 
 While simpler,
 
 ```
-CREATE OR REPLACE VIEW ...
-AS
 SELECT t0.
 FROM some_table_name t0
 WHERE ...
@@ -69,8 +68,6 @@ appears to result in a logging entry for each tuple selected.
 Using a CTE however,
 
 ```
-CREATE OR REPLACE VIEW ...
-AS
 WITH qb AS (
 SELECT util_log.query_bug ( 'optional tag' ) AS x
 )
@@ -81,7 +78,7 @@ WHERE ...
 AND qb.x ;
 ```
 
-appears to result in only one logging entry for each time the view is queried.
+appears to result in only one logging entry for each time the query is executed.
 
 
 [top](#top)
