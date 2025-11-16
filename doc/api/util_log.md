@@ -21,7 +21,7 @@ Returns text
 Function dici (Italian for "you say") takes an input and converts it to a text output. In the
 case of a character/text input it also adds proper quoting.
 
-| Parameter                      | In/Out | Datatype   | Remarks                                            |
+| Parameter                      | In/Out | Datatype   | Description                                        |
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
 | a_arg                          | in     | anyelement | The item to be cast to text.                       |
 
@@ -42,7 +42,7 @@ Returns boolean
 Function query_bug is intended for including in SQL user functions or views to
 log if the function/view is being queried from.
 
-| Parameter                      | In/Out | Datatype   | Remarks                                            |
+| Parameter                      | In/Out | Datatype   | Description                                        |
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
 | a_tag                          | in     | text       | The optional tag to log.                           |
 
@@ -98,7 +98,7 @@ Procedure log_begin is used to log the beginning of a function/procedure
 If the function/procedure is called from another function/procedure then this
 is logged as "Begin" level, otherwise this is logged as "Entry" level.
 
-| Parameter                      | In/Out | Datatype   | Remarks                                            |
+| Parameter                      | In/Out | Datatype   | Description                                        |
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
 | a_args                         | in     | text[]     | The list of elements to log                        |
 
@@ -121,7 +121,7 @@ util_log.dici ( parameter_n ) ) ;
 
 Procedure log_info is used to log the "Debug" level information.
 
-| Parameter                      | In/Out | Datatype   | Remarks                                            |
+| Parameter                      | In/Out | Datatype   | Description                                        |
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
 | a_args                         | in     | text[]     | The list of debug elements to log                  |
 
@@ -131,7 +131,7 @@ Procedure log_info is used to log the "Debug" level information.
 
 Procedure log_info is used to log the "Exception" level information.
 
-| Parameter                      | In/Out | Datatype   | Remarks                                            |
+| Parameter                      | In/Out | Datatype   | Description                                        |
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
 | a_args                         | in     | text[]     | The list of exception elements to log              |
 
@@ -156,7 +156,7 @@ Takes no arguments and simply adds an "Info" entry in the log with the text of
 
 Procedure log_info is used to log the "Info" level information.
 
-| Parameter                      | In/Out | Datatype   | Remarks                                            |
+| Parameter                      | In/Out | Datatype   | Description                                        |
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
 | a_args                         | in     | text[]     | The list of informational elements to log          |
 
@@ -168,7 +168,7 @@ Function log_to_dblink takes a logging level and a variable list of text values,
 determines which function/procedure was called (and which function/procedure
 called it (if applicable)) and uses dblink to log the results.
 
-| Parameter                      | In/Out | Datatype   | Remarks                                            |
+| Parameter                      | In/Out | Datatype   | Description                                        |
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
 | a_log_level                    | in     | integer    | The logging level (per st_log_level)               |
 | a_args                         | in     | text[]     | The list of elements to log                        |
