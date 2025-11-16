@@ -8,7 +8,7 @@ AS $$
 Function query_bug is intended for including in SQL user functions or views to
 log if the function/view is being queried from.
 
-| Parameter                      | In/Out | Datatype   | Remarks                                            |
+| Parameter                      | In/Out | Datatype   | Description                                        |
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
 | a_tag                          | in     | text       | The optional tag to log.                           |
 

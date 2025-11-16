@@ -11,7 +11,7 @@ AS $$
 Function dici (Italian for "you say") takes an input and converts it to a text output. In the
 case of a character/text input it also adds proper quoting.
 
-| Parameter                      | In/Out | Datatype   | Remarks                                            |
+| Parameter                      | In/Out | Datatype   | Description                                        |
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
 | a_arg                          | in     | anyelement | The item to be cast to text.                       |
 

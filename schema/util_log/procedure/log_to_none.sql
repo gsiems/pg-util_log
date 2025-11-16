@@ -7,7 +7,7 @@ AS $$
 /**
 Function log_to_none performs no actual logging whatsoever.
 
-| Parameter                      | In/Out | Datatype   | Remarks                                            |
+| Parameter                      | In/Out | Datatype   | Description                                        |
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
 | a_log_level                    | in     | integer    | The logging level (per st_log_level)               |
 | a_args                         | in     | text[]     | The list of elements to log                        |

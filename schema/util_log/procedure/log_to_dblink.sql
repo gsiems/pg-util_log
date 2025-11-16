@@ -10,7 +10,7 @@ Function log_to_dblink takes a logging level and a variable list of text values,
 determines which function/procedure was called (and which function/procedure
 called it (if applicable)) and uses dblink to log the results.
 
-| Parameter                      | In/Out | Datatype   | Remarks                                            |
+| Parameter                      | In/Out | Datatype   | Description                                        |
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
 | a_log_level                    | in     | integer    | The logging level (per st_log_level)               |
 | a_args                         | in     | text[]     | The list of elements to log                        |

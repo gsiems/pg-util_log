@@ -16,7 +16,7 @@ Function log_atx inserts into the dt_proc_log table and is intended to
 be called via pg_background_launch function for persisting log entries
 in the event of rollbacks in the data processing
 
-| Parameter                      | In/Out | Datatype   | Remarks                                            |
+| Parameter                      | In/Out | Datatype   | Description                                        |
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
 | a_log_level                    | in     | integer    | The logging level                                  |
 | a_pid                          | in     | integer    | The process ID of the client connection            |

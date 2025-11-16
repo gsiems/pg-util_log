@@ -5,7 +5,7 @@ AS $$
 /**
 Procedure log_info is used to log the "Debug" level information.
 
-| Parameter                      | In/Out | Datatype   | Remarks                                            |
+| Parameter                      | In/Out | Datatype   | Description                                        |
 | ------------------------------ | ------ | ---------- | -------------------------------------------------- |
 | a_args                         | in     | text[]     | The list of debug elements to log                  |
 
