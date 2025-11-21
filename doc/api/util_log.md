@@ -57,10 +57,10 @@ function or view is actually being used.
 While simpler,
 
 ```
-SELECT t0.
-FROM some_table_name t0
-WHERE ...
-AND util_log.query_bug ( 'optional tag' ) ;
+    SELECT t0.
+        FROM some_table_name t0
+        WHERE ...
+            AND util_log.query_bug ( 'optional tag' ) ;
 ```
 
 appears to result in a logging entry for each tuple selected.
@@ -68,14 +68,14 @@ appears to result in a logging entry for each tuple selected.
 Using a CTE however,
 
 ```
-WITH qb AS (
-SELECT util_log.query_bug ( 'optional tag' ) AS x
-)
-SELECT t0.
-FROM some_table_name t0
-CROSS JOIN qb
-WHERE ...
-AND qb.x ;
+    WITH qb AS (
+        SELECT util_log.query_bug ( 'optional tag' ) AS x
+    )
+    SELECT t0.
+        FROM some_table_name t0
+        CROSS JOIN qb
+        WHERE ...
+            AND qb.x ;
 ```
 
 appears to result in only one logging entry for each time the query is executed.
@@ -107,12 +107,12 @@ call to log_begin at the top of the function/procedure:
 
 ```
 BEGIN
-call util_log.log_begin (
-util_log.dici ( parameter_one ),
-util_log.dici ( parameter_two ),
-...
-util_log.dici ( parameter_n ) ) ;
-...
+    call util_log.log_begin (
+        util_log.dici ( parameter_one ),
+        util_log.dici ( parameter_two ),
+        ...
+        util_log.dici ( parameter_n ) ) ;
+    ...
 ```
 
 
@@ -138,7 +138,7 @@ Procedure log_info is used to log the "Exception" level information.
 To log an exception:
 
 ```
-call util_log.log_exception ( SQLSTATE::text || ' - ' || SQLERRM ) ;
+    call util_log.log_exception ( SQLSTATE::text || ' - ' || SQLERRM ) ;
 ```
 
 
